@@ -1,14 +1,29 @@
-# Youtube video reference : https://www.youtube.com/watch?v=BsVQ_cBmEwg
-# Go to gmail settings of the sender gmail and turn ON 'Less secure app access'
+#Youtube Reference : https://www.youtube.com/watch?v=zxFXnLEmnb4
 
+from email.message import EmailMessage
+from app2 import password
+import ssl
 import smtplib
 
-server = smtplib.SMTP('smtp.gmail.com', 567)
+email_sender = 'adamsjohnwork@gmail.com'
+email_password = password
 
-server.starttls()
+email_receiver = '' # enter email
 
-server.login('','') # email in first single quotes AND password in second single quotes
+subject = "Something Detected"
 
-server.sendmail('','Mail sent from python') # receiver email in quotes
+body = """
+An appliance is detected in the camera that is turned ON
+"""
 
-print('Mail sent')
+em = EmailMessage()
+em['From'] = email_sender
+em['To'] = email_receiver
+em['subject'] = subject
+em.set_content(body)
+
+context = ssl.create_default_context()
+
+with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as smtp:
+    smtp.login(email_sender, email_password)
+    smtp.sendmail(email_sender, email_receiver, em.as_string)
