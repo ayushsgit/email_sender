@@ -1,3 +1,4 @@
+Code for sending email using Python : 
 ```
 from email.message import EmailMessage
 import ssl
